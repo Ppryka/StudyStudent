@@ -30,5 +30,4 @@ W katalogu `/prototypes` znajdują się 2 prototypy graficzne przedstawiające i
 
 ### Wykorzystany stack technologiczny:
 **Język:** Python
-**Framework interfejsu:**
- **Mapa:** 
+ **Mapa:** leafletjs.com
