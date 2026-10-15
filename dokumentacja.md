@@ -1,11 +1,8 @@
-# Study Student – dokumentacja analityczna
+
 
 | Pole | Wartość |
 |---|---|
 | Produkt | Study Student – aplikacja webowa do znajdowania partnerów do nauki i znajomych na uczelni |
-| Wersja dokumentu | 1.0 (Draft) |
-| Data | 2026-10-15 |
-| Autor | Analityk Systemowy / Inżynier Wymagań |
 | Stack (kontekst) | Python, środowisko VS Code |
 
 **Spis treści**
