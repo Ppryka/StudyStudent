@@ -1,7 +1,6 @@
 # Feature Specification: Study Student – platforma kojarzenia studentów do wspólnej nauki
 
 **Feature Branch**: `001-study-student-mvp`
-**Created**: 2026-10-15
 **Status**: Draft
 **Input**: Opis interesariusza: „Aplikacja webowa ułatwiająca studentom znalezienie osób do wspólnej nauki z konkretnych przedmiotów oraz nawiązywanie nowych znajomości na uczelni (tablica ogłoszeń, filtrowanie, profil studenta, mapa miejsc spotkań, sekcja społecznościowa „okienka”)”.
 
