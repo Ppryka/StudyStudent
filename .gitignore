@@ -1,1 +1,22 @@
+# Wirtualne srodowisko Pythona
+venv/
+env/
+ENV/
 
+# Pliki tymczasowe Pythona i pamiec podreczna kompilatora
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Pliki konfiguracyjne edytorow i systemu
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Pliki bazy danych
+*.db
+*.sqlite3
+
+# Pliki srodowiskowe
+.env
