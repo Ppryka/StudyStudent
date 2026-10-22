@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
-# Inicjalizacja frameworka FastAPI
+# InicjalizacjaFastAPI 
 app = FastAPI(
-    title="StudyBuddy API",
-    description="Aplikacja do laczenia studentow w celu nauki i wspólnych wyjsc.",
+    title="StudyStudent",
     version="1.0.0",
 )
+@app.get("/")
+def read_root():
+    return {"message": "Witaj w aplikacji}
