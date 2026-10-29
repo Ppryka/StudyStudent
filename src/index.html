@@ -2,13 +2,55 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>StudyBuddy - Tablica</title>
+    <title>StudyBuddy - Tablica Ogłoszeń</title>
     <style>
+
+
+
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f9;
             padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
+
+
+        .filtr-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sekcja-filtrow {
+            margin-bottom: 12px;
+        }
+
+            .sekcja-filtrow label {
+                font-weight: bold;
+                margin-right: 8px;
+                display: block;
+                margin-bottom: 8px;
+            }
+
+
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+            button:hover {
+                background: #0056b3;
+            }
 
         .ogloszenie {
             background: white;
@@ -17,57 +59,164 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        
+
+
+        .kategoria {
+            color: #555;
+            font-size: 14px;
+            margin: 5px 0;
+        }
 
         .tag {
-            background: #007bff;
+            background: #28a745;
             color: white;
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 12px;
+            display: inline-block;
+        }
+
+        .info-tagi {
+            color: #777;
+            font-style: italic;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
     <h1>Tablica Ogłoszeń StudyBuddy</h1>
-    <button onclick="pobierzOgloszenia()">Pobierz wszystkie ogłoszenia</button>
-    <button onclick="pobierzOgloszenia('Nauka')">Filtruj: Nauka</button>
-    <button onclick="pobierzOgloszenia('Mieszkanie')">Filtruj: Mieszkanie</button>
-    <button onclick="pobierzOgloszenia('Sport')">Filtruj: Sport</button>
 
-    <div id="tablica" style="margin-top: 20px;">
+    <div class="filtr-box">
 
+        <div class="sekcja-filtrow">
+            <label>1. Wybierz kategorię:</label>
+            <button onclick="wybierzKategorie('')">Wszystkie</button>
+            <button onclick="wybierzKategorie('Nauka')">Nauka</button>
+            <button onclick="wybierzKategorie('Mieszkanie')">Mieszkanie</button>
+            <button onclick="wybierzKategorie('Sport')">Sport</button>
+        </div>
+
+
+        <div class="sekcja-filtrow">
+            <label>2. Wybierz tag:</label>
+            <div id="kontener-tagow">
+                <span class="info-tagi">Najpierw wybierz konkretną kategorię, aby zobaczyć dostępne tagi.</span>
+            </div>
+        </div>
     </div>
 
+
+
+
+
+
+    <div id="status-filtrow" style="margin-bottom: 10px; color: #666; font-size: 14px;"></div>
+    <div id="tablica"></div>
+
     <script>
-    
-        async function pobierzOgloszenia(kategoria = "") {
+
+        const tagiDlaKategorii = {
+            'Nauka': ['Matma', 'Programowanie', 'Fizyka'],
+            'Mieszkanie': ['Pokoj jednoosobowy', 'Pokoj dwuosobowy'],
+            'Sport': ['Rower', 'Basen']
+        };
+
+
+
+        let wybranaKategoria = "";
+        let wybranyTag = "";
+
+        function wybierzKategorie(kat) {
+            wybranaKategoria = kat;
+            wybranyTag = ""; 
+            generujPrzyciskiTagow();
+            pobierzOgloszenia();
+        }
+
+        function wybierzTag(tg) {
+            wybranyTag = tg;
+            pobierzOgloszenia();
+        }
+
+        function generujPrzyciskiTagow() {
+            const kontener = document.getElementById('kontener-tagow');
+            kontener.innerHTML = "";
+
+            if (!wybranaKategoria) {
+                kontener.innerHTML = '<span class="info-tagi">Najpierw wybierz konkretną kategorię, aby zobaczyć dostępne tagi.</span>';
+                return;
+            }
+            const dostepneTagi = tagiDlaKategorii[wybranaKategoria];
+
+
+
+
+
+
+            const btnWszystkie = document.createElement('button');
+            btnWszystkie.innerText = "Wszystkie tagi";
+
+            btnWszystkie.onclick = () => wybierzTag("");
+            kontener.appendChild(btnWszystkie);
+
+
+
+            dostepneTagi.forEach(tg => {
+                const btn = document.createElement('button');
+                btn.innerText = tg;
+                btn.onclick = () => wybierzTag(tg);
+                kontener.appendChild(btn);
+            });
+
+
+        }
+
+
+
+        async function pobierzOgloszenia() {
+
+            let params = new URLSearchParams();
+
+
+            if (wybranaKategoria) params.append('kategoria', wybranaKategoria);
+            if (wybranyTag) params.append('tag', wybranyTag);
+
+
             let url = '/api/ogloszenia';
-            if (kategoria) {
-                url += `?kategoria=${kategoria}`;
+            if (params.toString()) {
+                url += '?' + params.toString();
             }
 
             const odpowiedz = await fetch(url);
             const dane = await odpowiedz.json();
 
-            const tablica = document.getElementById('tablica');
-            tablica.innerHTML = ""; 
+            document.getElementById('status-filtrow').innerText = `Aktywne filtry — Kategoria: ${wybranaKategoria || 'Wszystkie'}, Tag: ${wybranyTag || 'Wszystkie'}`;
 
- 
+            const tablica = document.getElementById('tablica');
+            tablica.innerHTML = "";
+
+            if (dane.length === 0) {
+                tablica.innerHTML = "<p><em>Brak ogłoszeń spełniających podane kryteria.</em></p>";
+                return;
+            }
+
             dane.forEach(ogloszenie => {
                 const element = document.createElement('div');
                 element.className = 'ogloszenie';
                 element.innerHTML = `
                         <h3>${ogloszenie.tytul}</h3>
-                        <p>Kategoria: <strong>${ogloszenie.kategoria}</strong></p>
-                        <span class="tag">${ogloszenie.tag}</span>
+                        <p class="kategoria">Kategoria: <strong>${ogloszenie.kategoria}</strong></p>
+                        <span class="tag">#${ogloszenie.tag}</span>
                     `;
                 tablica.appendChild(element);
             });
         }
 
-        
-        pobierzOgloszenia();</script>
+   
+        pobierzOgloszenia();
+    </script>
 
 </body>
 </html>
