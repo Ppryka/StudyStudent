@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>StudyBuddy - Tablica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            padding: 20px;
+        }
+
+        .ogloszenie {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tag {
+            background: #007bff;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tablica Ogłoszeń StudyBuddy</h1>
+    <button onclick="pobierzOgloszenia()">Pobierz wszystkie ogłoszenia</button>
+    <button onclick="pobierzOgloszenia('Nauka')">Filtruj: Nauka</button>
+    <button onclick="pobierzOgloszenia('Mieszkanie')">Filtruj: Mieszkanie</button>
+    <button onclick="pobierzOgloszenia('Sport')">Filtruj: Sport</button>
+
+    <div id="tablica" style="margin-top: 20px;">
+
+    </div>
+
+    <script>
+    
+        async function pobierzOgloszenia(kategoria = "") {
+            let url = '/api/ogloszenia';
+            if (kategoria) {
+                url += `?kategoria=${kategoria}`;
+            }
+
+            const odpowiedz = await fetch(url);
+            const dane = await odpowiedz.json();
+
+            const tablica = document.getElementById('tablica');
+            tablica.innerHTML = ""; 
+
+ 
+            dane.forEach(ogloszenie => {
+                const element = document.createElement('div');
+                element.className = 'ogloszenie';
+                element.innerHTML = `
+                        <h3>${ogloszenie.tytul}</h3>
+                        <p>Kategoria: <strong>${ogloszenie.kategoria}</strong></p>
+                        <span class="tag">${ogloszenie.tag}</span>
+                    `;
+                tablica.appendChild(element);
+            });
+        }
+
+        
+        pobierzOgloszenia();</script>
+
+</body>
+</html>
