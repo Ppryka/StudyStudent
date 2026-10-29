@@ -1,4 +1,5 @@
 # Wirtualne srodowisko Pythona
+.venv/
 venv/
 env/
 ENV/
@@ -20,3 +21,7 @@ Thumbs.db
 
 # Pliki srodowiskowe
 .env
+
+#Cache lintera i testow
+.ruff_cache/
+.pytest_cache

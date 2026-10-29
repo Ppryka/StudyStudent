@@ -1,3 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "studystudent"
+version = "0.1.0"
+description = "Aplikacja do wyszukiwania partnerow do nauki"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "pydantic>=2.6.0"
+]
+
 [tool.ruff]
 line-length = 88
 select = ["E", "F", "I"]
