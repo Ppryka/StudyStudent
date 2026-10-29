@@ -8,7 +8,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-#sciezka dostepu
+# Sciezka
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 OGLOSZENIA = [
@@ -20,7 +20,7 @@ OGLOSZENIA = [
     },
     {
         "id": 2,
-        "tytul": "Kurs Pythona dla początkujących",
+        "tytul": "Zrobie za kogos zadania z c++",
         "kategoria": "Nauka",
         "tag": "Programowanie",
     },
@@ -28,14 +28,17 @@ OGLOSZENIA = [
         "id": 3,
         "tytul": "Pokój jednoosobowy do wynajęcia",
         "kategoria": "Mieszkanie",
-        "tag": "Wynajem",
+        "tag": "Pokoj jednoosobowy",
     },
-    {"id": 4, "tytul": "Sprzedam rower miejski", "kategoria": "Sport", "tag": "Rower"},
+    {   "id": 4,
+        "tytul": "Rajd rowerowy jutro zbiorka",
+        "kategoria": "Sport",
+        "tag": "Rower"},
     {
         "id": 5,
-        "tytul": "Oddam podręczniki do biologii",
+        "tytul": "Szukam osoby do nauki fizyki na jutrzejsze kolokwium",
         "kategoria": "Nauka",
-        "tag": "Książki",
+        "tag": "Fizyka",
     },
 ]
 
@@ -47,27 +50,33 @@ def strona_glowna():
     if os.path.exists(sciezka_html):
         return FileResponse(sciezka_html)
 
-    return {
-        "message": "Witaj w aplikacji"
-    }
+    return {"message": "Witaj w aplikacji"}
 
 
-# Filtrowanie ogloszen
+# Filtrowanie ogłoszen
 @app.get("/api/ogloszenia")
-def pobierz_ogloszenia(kategoria: Optional[str] = None):
+def pobierz_ogloszenia(
+    kategoria: Optional[str] = None,
+    tag: Optional[str] = None
+):
+    wyniki = OGLOSZENIA
 
+    # Filtrowanie po kategorii
     if kategoria:
-        return [
-            o
-            for o in OGLOSZENIA
-            if o["kategoria"].lower() == kategoria.lower()
+        wyniki = [
+            o for o in wyniki if o["kategoria"].lower() == kategoria.lower()
         ]
 
-    return OGLOSZENIA
+    # Filtrowanie po
+    if tag:
+        wyniki = [
+            o for o in wyniki if o["tag"].lower() == tag.lower()
+        ]
+
+    return wyniki
 
 
 if __name__ == "__main__":
     import uvicorn
 
-    
     uvicorn.run(app, host="127.0.0.1", port=8000)
