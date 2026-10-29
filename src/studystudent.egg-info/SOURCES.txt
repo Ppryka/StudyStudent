@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-src/__init__.py
-src/main.py
-src/studystudent.egg-info/PKG-INFO
-src/studystudent.egg-info/SOURCES.txt
-src/studystudent.egg-info/dependency_links.txt
-src/studystudent.egg-info/requires.txt
-src/studystudent.egg-info/top_level.txt
