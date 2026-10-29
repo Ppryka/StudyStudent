@@ -1,396 +1,252 @@
 <!DOCTYPE html>
 <html lang="pl">
-
 <head>
     <meta charset="UTF-8">
-    <title>Study Student - Tablica Ogłoszeń</title>
+    <title>StudyStudent - Tablica Ogłoszeń</title>
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
-            background-color: #f4f6f9;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Górny pasek nawigacyjny z prototypu */
-        .navbar {
-            background-color: #2c3e50;
-            color: white;
+    
+        .top-bar {
+            background-color: #111111;
+            color: #ffffff;
+            padding: 12px 40px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
-        .logo {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #f39c12;
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            user-select: none;
         }
 
-        .user-info {
-            font-size: 0.9em;
-            color: #bdc3c7;
+    
+        .logo-badge {
+            background: linear-gradient(135deg, #007bff, #00d2ff);
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 3px 8px rgba(0, 123, 255, 0.4);
         }
 
-        /* Układ dwukolumnowy */
-        .main-container {
-            max-width: 1100px;
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+            .logo-text span {
+                color: #00d2ff;
+            }
+
+        /* 
+           TREŚĆ GŁÓWNA STRONY
+         */
+        .container {
+            max-width: 800px;
             margin: 30px auto;
             padding: 0 20px;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 30px;
         }
 
-        /* Lewy panel filtrów (US-03) */
-        .sidebar {
+        .filtr-box {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            height: fit-content;
-        }
-
-        .sidebar h3 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        .filter-group {
-            margin-bottom: 15px;
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: 0.85em;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .filter-group input,
-        .filter-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .btn-filtr {
-            width: 100%;
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .btn-filtr:hover {
-            background: #2980b9;
-        }
-
-        .btn-wyczysc {
-            width: 100%;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 8px;
-        }
-
-        .btn-wyczysc:hover {
-            background: #c0392b;
-        }
-
-        /* Prawa strona: Ogłoszenia */
-        .content h2 {
             margin-bottom: 20px;
-            color: #2c3e50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            margin-bottom: 15px;
+        .sekcja-filtrow {
+            margin-bottom: 12px;
         }
 
-        .card h3 {
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
+            .sekcja-filtrow label {
+                font-weight: bold;
+                margin-right: 8px;
+                display: block;
+                margin-bottom: 8px;
+            }
 
-        .card p {
-            font-size: 0.9em;
-            color: #555;
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
             margin-bottom: 5px;
         }
 
-        .meta {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            margin-top: 10px;
-            border-top: 1px solid #eee;
-            padding-top: 8px;
-        }
+            button:hover {
+                background: #0056b3;
+            }
 
-        /* Komunikat o braku wyników */
-        .alert-box {
-            background: #ffeaa7;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            color: #d35400;
-            font-weight: bold;
-        }
-
-        /* Pływający przycisk dodawania (+) */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background-color: #e67e22;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            border: none;
-        }
-
-        .fab:hover {
-            background-color: #d35400;
-        }
-
-        /* Okienko modalne dodawania */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
+        .ogloszenie {
             background: white;
-            padding: 25px;
+            padding: 15px;
+            margin-bottom: 10px;
             border-radius: 8px;
-            width: 350px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .modal-content input,
-        .modal-content select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .kategoria {
+            color: #555;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .tag {
+            background: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .info-tagi {
+            color: #777;
+            font-style: italic;
+            font-size: 14px;
         }
     </style>
 </head>
-
 <body>
 
-    <div class="navbar">
-        <div class="logo">🎓 Study Student</div>
-        <div class="user-info">Katarzyna N.</div>
-    </div>
-
-    <div class="main-container">
-        <!-- Lewy panel: Filtry z US-03 -->
-        <div class="sidebar">
-            <h3>Filtry wyszukiwania</h3>
-
-            <div class="filter-group">
-                <label>Uczelnia</label>
-                <input type="text" id="uczelnia" placeholder="np. Politechnika Warszawska">
-            </div>
-
-            <div class="filter-group">
-                <label>Przedmiot</label>
-                <input type="text" id="przedmiot" placeholder="np. Analiza">
-            </div>
-
-            <div class="filter-group">
-                <label>Forma spotkań</label>
-                <select id="forma">
-                    <option value="">Wszystkie</option>
-                    <option value="stacjonarna">Stacjonarna</option>
-                    <option value="online">Online</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label>Maks. lokalizacja (dystans w km)</label>
-                <input type="number" id="dystans" step="0.5" placeholder="np. 2">
-            </div>
-
-            <button class="btn-filtr" onclick="zastosujFiltry()">Filtruj</button>
-            <button class="btn-wyczysc" onclick="wyczyscFiltry()">Wyczyść filtry</button>
-        </div>
-
-        <!-- Prawa strona: Wyniki -->
-        <div class="content">
-            <h2>Aktualne Ogłoszenia</h2>
-            <div id="wyniki">Ładowanie...</div>
+ 
+    <div class="top-bar">
+        <div class="logo-section" onclick="window.location.reload()">
+            <div class="logo-badge">🦉</div>
+            <div class="logo-text">Study<span>Student</span></div>
         </div>
     </div>
 
-    <!-- Przycisk dodawania -->
-    <button class="fab" onclick="otworzModal()" title="Dodaj ogłoszenie">+</button>
+ 
+    <div class="container">
+        <h1 style="margin-top: 0; margin-bottom: 20px;">Tablica Ogłoszeń</h1>
 
-    <!-- Modal dodawania ogłoszenia -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h3>Nowe ogłoszenie</h3>
-            <input type="text" id="nowy-tytul" placeholder="Tytuł ogłoszenia">
-            <input type="text" id="nowa-uczelnia" placeholder="Uczelnia (np. AGH)">
-            <input type="text" id="nowy-przedmiot" placeholder="Przedmiot">
-            <select id="nowa-forma">
-                <option value="stacjonarna">Stacjonarna</option>
-                <option value="online">Online</option>
-            </select>
-            <input type="number" id="nowy-dystans" step="0.1" placeholder="Dystans w km (np. 1.5)" value="1.0">
-            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-                <button onclick="zamknijModal()"
-                    style="padding: 6px 12px; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer;">Anuluj</button>
-                <button onclick="dodajOgłoszenie()"
-                    style="padding: 6px 12px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">Zapisz</button>
+        <div class="filtr-box">
+            <div class="sekcja-filtrow">
+                <label>1. Wybierz kategorię:</label>
+                <button onclick="wybierzKategorie('')">Wszystkie</button>
+                <button onclick="wybierzKategorie('Nauka')">Nauka</button>
+                <button onclick="wybierzKategorie('Wspolne wyjscie')">Wspolne wyjscie</button>
+            </div>
+
+            <div class="sekcja-filtrow">
+                <label>2. Wybierz tag:</label>
+                <div id="kontener-tagow">
+                    <span class="info-tagi">Najpierw wybierz konkretną kategorię, aby zobaczyć dostępne tagi.</span>
+                </div>
             </div>
         </div>
+
+        <div id="status-filtrow" style="margin-bottom: 10px; color: #666; font-size: 14px;"></div>
+        <div id="tablica"></div>
     </div>
 
     <script>
-        // Trwałość filtrów w adresie URL (Scenariusz BDD)
-        window.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('uczelnia')) document.getElementById('uczelnia').value = params.get('uczelnia');
-            if (params.has('przedmiot')) document.getElementById('przedmiot').value = params.get('przedmiot');
-            if (params.has('forma')) document.getElementById('forma').value = params.get('forma');
-            if (params.has('max_dystans_km')) document.getElementById('dystans').value = params.get('max_dystans_km');
+        const tagiDlaKategorii = {
+            'Nauka': ['Matma', 'Programowanie', 'Fizyka'],
+            'Wspolne wyjscie': ['Impreza', 'Sport'],
+        };
 
-            pobierzOgłoszenia();
-        });
+        let wybranaKategoria = "";
+        let wybranyTag = "";
 
-        async function pobierzOgłoszenia() {
-            let uczelnia = document.getElementById('uczelnia').value;
-            let przedmiot = document.getElementById('przedmiot').value;
-            let forma = document.getElementById('forma').value;
-            let dystans = document.getElementById('dystans').value;
+        function wybierzKategorie(kat) {
+            wybranaKategoria = kat;
+            wybranyTag = "";
+            generujPrzyciskiTagow();
+            pobierzOgloszenia();
+        }
 
-            let url = '/api/ogloszenia?';
-            if (uczelnia) url += `uczelnia=${encodeURIComponent(uczelnia)}&`;
-            if (przedmiot) url += `przedmiot=${encodeURIComponent(przedmiot)}&`;
-            if (forma) url += `forma=${encodeURIComponent(forma)}&`;
-            if (dystans) url += `max_dystans_km=${encodeURIComponent(dystans)}&`;
+        function wybierzTag(tg) {
+            wybranyTag = tg;
+            pobierzOgloszenia();
+        }
 
-            let res = await fetch(url);
-            let data = await res.json();
+        function generujPrzyciskiTagow() {
+            const kontener = document.getElementById('kontener-tagow');
+            kontener.innerHTML = "";
 
-            let kontener = document.getElementById('wyniki');
-            kontener.innerHTML = '';
-
-            // Obsługa scenariusza BDD: Brak wyników
-            if (data.message === "Brak ogłoszeń") {
-                kontener.innerHTML = `
-                    <div class="alert-box">
-                        <p>Brak ogłoszeń</p>
-                        <button class="btn-wyczysc" style="max-width: 200px; margin: 10px auto 0;" onclick="wyczyscFiltry()">Wyczyść filtry</button>
-                    </div>`;
+            if (!wybranaKategoria) {
+                kontener.innerHTML = '<span class="info-tagi">Najpierw wybierz konkretną kategorię, aby zobaczyć dostępne tagi.</span>';
                 return;
             }
 
-            let lista = data.dane || [];
-            lista.forEach(o => {
-                kontener.innerHTML += `
-                    <div class="card">
-                        <h3>${o.tytul}</h3>
-                        <p><strong>Uczelnia:</strong> ${o.uczelnia}</p>
-                        <p><strong>Przedmiot:</strong> ${o.przedmiot}</p>
-                        <div class="meta">Forma: ${o.forma} | Dystans: ${o.dystans_km} km</div>
-                    </div>
-                `;
+            const dostepneTagi = tagiDlaKategorii[wybranaKategoria] || [];
+
+            const btnWszystkie = document.createElement('button');
+            btnWszystkie.innerText = "Wszystkie tagi";
+            btnWszystkie.onclick = () => wybierzTag("");
+            kontener.appendChild(btnWszystkie);
+
+            dostepneTagi.forEach(tg => {
+                const btn = document.createElement('button');
+                btn.innerText = tg;
+                btn.onclick = () => wybierzTag(tg);
+                kontener.appendChild(btn);
             });
         }
 
-        function zastosujFiltry() {
-            let uczelnia = document.getElementById('uczelnia').value;
-            let przedmiot = document.getElementById('przedmiot').value;
-            let forma = document.getElementById('forma').value;
-            let dystans = document.getElementById('dystans').value;
-
+        async function pobierzOgloszenia() {
             let params = new URLSearchParams();
-            if (uczelnia) params.set('uczelnia', uczelnia);
-            if (przedmiot) params.set('przedmiot', przedmiot);
-            if (forma) params.set('forma', forma);
-            if (dystans) params.set('max_dystans_km', dystans);
 
-            // Zapis w URL (Trwałość filtrów po odświeżeniu)
-            window.history.pushState({}, '', window.location.pathname + (params.toString() ? '?' + params.toString() : ''));
-            pobierzOgłoszenia();
-        }
+            if (wybranaKategoria) params.append('kategoria', wybranaKategoria);
+            if (wybranyTag) params.append('tag', wybranyTag);
 
-        function wyczyscFiltry() {
-            document.getElementById('uczelnia').value = '';
-            document.getElementById('przedmiot').value = '';
-            document.getElementById('forma').value = '';
-            document.getElementById('dystans').value = '';
-            window.history.pushState({}, '', window.location.pathname);
-            pobierzOgłoszenia();
-        }
+            let url = '/api/ogloszenia';
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
 
-        function otworzModal() { document.getElementById('modal').style.display = 'flex'; }
-        function zamknijModal() { document.getElementById('modal').style.display = 'none'; }
+            const odpowiedz = await fetch(url);
+            const dane = await odpowiedz.json();
 
-        async function dodajOgłoszenie() {
-            let tytul = document.getElementById('nowy-tytul').value;
-            let uczelnia = document.getElementById('nowa-uczelnia').value;
-            let przedmiot = document.getElementById('nowy-przedmiot').value;
-            let forma = document.getElementById('nowa-forma').value;
-            let dystans_km = parseFloat(document.getElementById('nowy-dystans').value) || 0.0;
+            document.getElementById('status-filtrow').innerText = `Aktywne filtry — Kategoria: ${wybranaKategoria || 'Wszystkie'}, Tag: ${wybranyTag || 'Wszystkie'}`;
 
-            if (!tytul || !uczelnia || !przedmiot) {
-                alert("Wypełnij wszystkie pola!");
+            const tablica = document.getElementById('tablica');
+            tablica.innerHTML = "";
+
+            if (dane.length === 0) {
+                tablica.innerHTML = "<p><em>Brak ogłoszeń spełniających podane kryteria.</em></p>";
                 return;
             }
 
-            let res = await fetch('/api/ogloszenia', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tytul, uczelnia, przedmiot, forma, dystans_km })
+            dane.forEach(ogloszenie => {
+                const element = document.createElement('div');
+                element.className = 'ogloszenie';
+                element.innerHTML = `
+                        <h3>${ogloszenie.tytul}</h3>
+                        <p class="kategoria">Kategoria: <strong>${ogloszenie.kategoria}</strong></p>
+                        <span class="tag">#${ogloszenie.tag}</span>
+                    `;
+                tablica.appendChild(element);
             });
-
-            if (res.ok) {
-                zamknijModal();
-                document.getElementById('nowy-tytul').value = '';
-                document.getElementById('nowa-uczelnia').value = '';
-                document.getElementById('nowy-przedmiot').value = '';
-                pobierzOgłoszenia();
-            }
         }
-    </script>
-</body>
 
+        pobierzOgloszenia();
+    </script>
+
+</body>
 </html>
