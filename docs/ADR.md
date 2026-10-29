@@ -1,8 +1,5 @@
-# Architecture Decision Records (ADR) – Projekt StudyBuddy
+# Architecture Decision Records (ADR) – Projekt StudyStudent
 
-Niniejszy dokument zawiera rejestr kluczowych decyzji architektonicznych (ADR) podjętych podczas projektowania i implementacji aplikacji **StudyBuddy**.
-
----
 
 ## ADR 001: Wybór frameworka backendowego (FastAPI)
 
