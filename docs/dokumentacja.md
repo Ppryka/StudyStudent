@@ -104,20 +104,11 @@ Feature: Przeglądanie i filtrowanie ogłoszeń
     When student doda filtry "Przedmiot = Analiza matematyczna" oraz "Forma = stacjonarna"
     Then lista zawiera wyłącznie ogłoszenia spełniające jednocześnie wszystkie trzy warunki
 
-  Scenario: Filtr po lokalizacji
-    Given student, który udostępnił swoją lokalizację
-    When ustawi filtr "Lokalizacja: do 2 km"
-    Then lista zawiera wyłącznie ogłoszenia stacjonarne z miejscem spotkania w promieniu 2 km
-
   Scenario: Brak wyników
     Given kombinacja filtrów, której nie spełnia żadne ogłoszenie
     When student zastosuje filtry
     Then system wyświetla komunikat "Brak ogłoszeń" i przycisk "Wyczyść filtry"
 
-  Scenario: Trwałość filtrów w adresie strony
-    Given student z ustawionymi filtrami
-    When odświeży stronę lub otworzy skopiowany adres strony
-    Then te same filtry są nadal zastosowane
 ```
 
 ### US-04 – Miejsce spotkania na mapie
