@@ -3,7 +3,7 @@
 
 ## ADR 001: Wybór frameworka backendowego (FastAPI)
 
-* **Data:** 2026-10-28
+
 * **Status:** Przyjęty (Accepted)
 * **Kontekst:** 
   Aplikacja wymaga wydajnego, łatwego w utrzymaniu backendu REST API, który umożliwia szybkie definiowanie punktów końcowych (endpointów), automatyczną walidację wejściowych danych oraz natychmiastową generację interaktywnej dokumentacji dla zespołu.
@@ -22,7 +22,7 @@
 
 ## ADR 002: Wybór narzędzia do statycznej analizy i formatowania kodu (Ruff)
 
-* **Data:** 2026-10-28
+
 * **Status:** Przyjęty (Accepted)
 * **Kontekst:** 
   Projekt musi spełniać rygorystyczne standardy czystości kodu (PEP 8) oraz posiadać scentralizowaną konfigurację sprawdzaną w sposób automatyczny przez narzędzia typu linter/formatter.
@@ -44,7 +44,7 @@
 
 ## ADR 003: Architektura interfejsu użytkownika (Vanilla HTML/JS serwowany z serwera)
 
-* **Data:** 2026-10-28
+
 * **Status:** Przyjęty (Accepted)
 
 * **Kontekst:** 
