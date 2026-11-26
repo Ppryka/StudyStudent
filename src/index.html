@@ -57,10 +57,26 @@
                 color: #00d2ff;
             }
 
-        .container {
-            max-width: 800px;
+        /* Układ dwukolumnowy: pasek filtrowania po lewej, treść po prawej */
+        .page-layout {
+            max-width: 1120px;
             margin: 30px auto;
-            padding: 0 20px;
+            padding: 0 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 28px;
+        }
+
+        .sidebar {
+            width: 270px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 24px;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .naglowek-tablicy {
@@ -91,21 +107,48 @@
         .filtr-box,
         .formularz-box {
             background: white;
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+            .filtr-box h2 {
+                margin: 0 0 14px 0;
+                font-size: 18px;
+                color: #2c4a7c;
+                border-bottom: 1px solid #eceef2;
+                padding-bottom: 10px;
+            }
+
         .sekcja-filtrow {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
+
+            .sekcja-filtrow:last-child {
+                margin-bottom: 0;
+            }
 
             .sekcja-filtrow label {
                 font-weight: bold;
-                margin-right: 8px;
                 display: block;
                 margin-bottom: 8px;
+                font-size: 14px;
+                color: #333;
+            }
+
+        .lista-filtrow {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+            .lista-filtrow button {
+                width: 100%;
+                text-align: left;
+                margin: 0;
+                padding: 8px 12px;
+                font-size: 14px;
             }
 
         button {
@@ -134,6 +177,7 @@
             button.aktywny {
                 background: #f5a041;
                 color: #1a1a2e;
+                font-weight: bold;
             }
 
                 button.aktywny:hover {
@@ -156,8 +200,8 @@
 
         .ogloszenie {
             background: white;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -187,7 +231,7 @@
         .kategoria {
             color: #555;
             font-size: 14px;
-            margin: 5px 0;
+            margin: 5px 0 8px 0;
         }
 
         .tag {
@@ -199,6 +243,18 @@
             display: inline-block;
         }
 
+        .forma-badge {
+            background: #eef3fb;
+            color: #2c4a7c;
+            border: 1px solid #c6d6f0;
+            padding: 2px 9px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 6px;
+        }
+
         .data {
             color: #777;
             font-size: 13px;
@@ -208,7 +264,9 @@
         .info-tagi {
             color: #777;
             font-style: italic;
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
+            display: block;
         }
 
         /* Formularz dodawania */
@@ -282,6 +340,32 @@
                 color: #1e6b34;
                 border: 1px solid #b9e2c4;
             }
+
+        @media (max-width: 780px) {
+            .top-bar {
+                padding: 12px 20px;
+            }
+
+            .page-layout {
+                flex-direction: column;
+                padding: 0 16px;
+                margin: 20px auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+
+            .lista-filtrow {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+                .lista-filtrow button {
+                    width: auto;
+                }
+        }
     </style>
 </head>
 <body>
@@ -293,62 +377,80 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="naglowek-tablicy">
-            <h1>Tablica Ogłoszeń</h1>
-            <button id="btn-dodaj" onclick="przelaczFormularz()">Dodaj ogłoszenie</button>
-        </div>
+    <div class="page-layout">
+        <!-- Boczny pasek filtrowania -->
+        <aside class="sidebar">
+            <div class="filtr-box">
+                <h2>Filtrowanie</h2>
 
-        <!-- Formularz dodawania ogłoszenia -->
-        <div class="formularz-box" id="formularz">
-            <h2>Nowe ogłoszenie</h2>
+                <div class="sekcja-filtrow">
+                    <label>1. Wybierz kategorię:</label>
+                    <div class="lista-filtrow" id="kontener-kategorii">
+                        <button class="aktywny" data-kat="" onclick="wybierzKategorie('')">Wszystkie</button>
+                        <button data-kat="Nauka" onclick="wybierzKategorie('Nauka')">Nauka</button>
+                        <button data-kat="Wspolne wyjscie" onclick="wybierzKategorie('Wspolne wyjscie')">Wspolne wyjscie</button>
+                    </div>
+                </div>
 
-            <div id="komunikat" class="komunikat" role="alert"></div>
-
-            <div class="pole">
-                <label for="pole-tytul">Tytuł (opcjonalnie)</label>
-                <input type="text" id="pole-tytul" maxlength="100">
-                <div class="podpowiedz">Jeśli go pominiesz, tytułem będzie początek opisu.</div>
-            </div>
-
-            <div class="pole">
-                <label for="pole-opis">Opis problemu</label>
-                <textarea id="pole-opis" maxlength="1000" oninput="aktualizujLicznik()"></textarea>
-                <div class="podpowiedz" id="licznik">0 / 1000 znaków (minimum 20)</div>
-            </div>
-
-            <div class="pole">
-                <label for="pole-kategoria">Kategoria</label>
-                <select id="pole-kategoria" onchange="wypelnijTagiFormularza()"></select>
-            </div>
-
-            <div class="pole">
-                <label for="pole-tag">Tag</label>
-                <select id="pole-tag"></select>
-            </div>
-
-            <button id="btn-opublikuj" onclick="dodajOgloszenie()">Opublikuj ogłoszenie</button>
-            <button class="drugorzedny" onclick="przelaczFormularz()">Anuluj</button>
-        </div>
-
-        <div class="filtr-box">
-            <div class="sekcja-filtrow">
-                <label>1. Wybierz kategorię:</label>
-                <button onclick="wybierzKategorie('')">Wszystkie</button>
-                <button onclick="wybierzKategorie('Nauka')">Nauka</button>
-                <button onclick="wybierzKategorie('Wspolne wyjscie')">Wspolne wyjscie</button>
-            </div>
-
-            <div class="sekcja-filtrow">
-                <label>2. Wybierz tag:</label>
-                <div id="kontener-tagow">
-                    <span class="info-tagi">Najpierw wybierz konkretną kategorię, aby zobaczyć dostępne tagi.</span>
+                <div class="sekcja-filtrow">
+                    <label>2. Wybierz tag:</label>
+                    <div class="lista-filtrow" id="kontener-tagow">
+                        <span class="info-tagi">Najpierw wybierz konkretną kategorię, aby zobaczyć dostępne tagi.</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </aside>
 
-        <div id="status-filtrow" style="margin-bottom: 10px; color: #666; font-size: 14px;"></div>
-        <div id="tablica"></div>
+        <!-- Główna treść -->
+        <main class="main-content">
+            <div class="naglowek-tablicy">
+                <h1>Tablica Ogłoszeń</h1>
+                <button id="btn-dodaj" onclick="przelaczFormularz()">Dodaj ogłoszenie</button>
+            </div>
+
+            <!-- Formularz dodawania ogłoszenia -->
+            <div class="formularz-box" id="formularz">
+                <h2>Nowe ogłoszenie</h2>
+
+                <div id="komunikat" class="komunikat" role="alert"></div>
+
+                <div class="pole">
+                    <label for="pole-tytul">Tytuł (opcjonalnie)</label>
+                    <input type="text" id="pole-tytul" maxlength="100">
+                    <div class="podpowiedz">Jeśli go pominiesz, tytułem będzie początek opisu.</div>
+                </div>
+
+                <div class="pole">
+                    <label for="pole-opis">Opis problemu</label>
+                    <textarea id="pole-opis" maxlength="1000" oninput="aktualizujLicznik()"></textarea>
+                    <div class="podpowiedz" id="licznik">0 / 1000 znaków (minimum 20)</div>
+                </div>
+
+                <div class="pole">
+                    <label for="pole-kategoria">Kategoria</label>
+                    <select id="pole-kategoria" onchange="wypelnijTagiFormularza()"></select>
+                </div>
+
+                <div class="pole">
+                    <label for="pole-tag">Tag</label>
+                    <select id="pole-tag"></select>
+                </div>
+
+                <div class="pole">
+                    <label for="pole-forma">Forma</label>
+                    <select id="pole-forma">
+                        <option value="Stacjonarnie">Stacjonarnie</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </div>
+
+                <button id="btn-opublikuj" onclick="dodajOgloszenie()">Opublikuj ogłoszenie</button>
+                <button class="drugorzedny" onclick="przelaczFormularz()">Anuluj</button>
+            </div>
+
+            <div id="status-filtrow" style="margin-bottom: 12px; color: #666; font-size: 14px;"></div>
+            <div id="tablica"></div>
+        </main>
     </div>
 
     <script>
@@ -378,6 +480,9 @@
         function wybierzKategorie(kat) {
             wybranaKategoria = kat;
             wybranyTag = "";
+            document.querySelectorAll('#kontener-kategorii button').forEach(btn => {
+                btn.classList.toggle('aktywny', btn.dataset.kat === kat);
+            });
             generujPrzyciskiTagow();
             pobierzOgloszenia();
         }
@@ -447,16 +552,18 @@
             }
 
             dane.forEach(ogloszenie => {
+                const formaTekst = ogloszenie.forma || 'Stacjonarnie';
                 const element = document.createElement('div');
                 element.className = 'ogloszenie';
                 element.innerHTML = `
-                        ${CZY_ADMIN ? `<button class="usun" onclick="usunOgloszenie(${Number(ogloszenie.id)})">Usuń</button>` : ''}
-                        <h3>${esc(ogloszenie.tytul)}</h3>
-                        <p class="opis">${esc(ogloszenie.opis)}</p>
-                        <p class="kategoria">Kategoria: <strong>${esc(ogloszenie.kategoria)}</strong></p>
-                        <span class="tag">#${esc(ogloszenie.tag)}</span>
-                        <span class="data">Dodano: ${esc(ogloszenie.data_publikacji)}</span>
-                    `;
+                            ${CZY_ADMIN ? `<button class="usun" onclick="usunOgloszenie(${Number(ogloszenie.id)})">Usuń</button>` : ''}
+                            <h3>${esc(ogloszenie.tytul)}</h3>
+                            <p class="opis">${esc(ogloszenie.opis)}</p>
+                            <p class="kategoria">Kategoria: <strong>${esc(ogloszenie.kategoria)}</strong></p>
+                            <span class="tag">#${esc(ogloszenie.tag)}</span>
+                            <span class="forma-badge">${esc(formaTekst)}</span>
+                            <span class="data">Dodano: ${esc(ogloszenie.data_publikacji)}</span>
+                        `;
                 tablica.appendChild(element);
             });
         }
@@ -541,6 +648,7 @@
             const tytul = document.getElementById('pole-tytul').value.trim();
             const kategoria = document.getElementById('pole-kategoria').value;
             const tag = document.getElementById('pole-tag').value;
+            const forma = document.getElementById('pole-forma').value;
 
             if (opis.length < MIN_OPIS) {
                 pokazKomunikat('blad', `Opis musi mieć co najmniej ${MIN_OPIS} znaków. Teraz ma ${opis.length}.`);
@@ -559,7 +667,8 @@
                         tytul: tytul || null,
                         opis: opis,
                         kategoria: kategoria,
-                        tag: tag
+                        tag: tag,
+                        forma: forma
                     })
                 });
 
@@ -573,6 +682,7 @@
                 // Sukces: czyścimy formularz, zamykamy go i odświeżamy tablicę
                 document.getElementById('pole-tytul').value = "";
                 document.getElementById('pole-opis').value = "";
+                document.getElementById('pole-forma').value = "Stacjonarnie";
                 aktualizujLicznik();
                 przelaczFormularz();
                 await pobierzOgloszenia();
