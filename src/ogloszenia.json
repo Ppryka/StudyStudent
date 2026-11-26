@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "tytul": "Korepetycje z matematyki",
+    "opis": "Szukam osoby do wspólnego przerobienia całek przed kolokwium z matematyki.",
+    "kategoria": "Nauka",
+    "tag": "Matma",
+    "status": "Aktywne",
+    "data_publikacji": "2026-11-25"
+  },
+  {
+    "id": 2,
+    "tytul": "Pomoc z C++",
+    "opis": "Pomogę w zrozumieniu wskaźników i programowania obiektowego w C++.",
+    "kategoria": "Nauka",
+    "tag": "Programowanie",
+    "status": "Aktywne",
+    "data_publikacji": "2026-11-25"
+  },
+  {
+    "id": 3,
+    "tytul": "Piwo wieczorem",
+    "opis": "Szukam ekipy na wspólne wyjście na piwo dziś wieczorem.",
+    "kategoria": "Wspolne wyjscie",
+    "tag": "Impreza",
+    "status": "Aktywne",
+    "data_publikacji": "2026-11-25"
+  },
+  {
+    "id": 4,
+    "tytul": "Rajd rowerowy jutro zbiórka",
+    "opis": "Jutro organizuję rajd rowerowy, zapraszam wszystkich chętnych na zbiórkę.",
+    "kategoria": "Wspolne wyjscie",
+    "tag": "Sport",
+    "status": "Aktywne",
+    "data_publikacji": "2026-11-25"
+  },
+  {
+    "id": 5,
+    "tytul": "Nauka fizyki na kolokwium",
+    "opis": "Potrzebuję pomocy z zadaniami z mechaniki klasycznej na zaliczenie z fizyki.",
+    "kategoria": "Nauka",
+    "tag": "Fizyka",
+    "status": "Wygasłe",
+    "data_publikacji": "2026-10-21"
+  }
+]
