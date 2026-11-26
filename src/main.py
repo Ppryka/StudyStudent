@@ -35,7 +35,7 @@ class Ogloszenie(BaseModel):
     data_publikacji: Optional[str] = None
 
 
-def dzis(dni_wstecz: int = 0) -> str:
+def dzis(dni_wstecz=0) -> str:
     return (datetime.now() - timedelta(days=dni_wstecz)).strftime("%Y-%m-%d")
 
 
@@ -180,7 +180,7 @@ def dodaj_ogloszenie(dane: Ogloszenie):
             detail="Opis problemu może mieć maksymalnie 1000 znaków.",
         )
 
-    forma_czysta = dane.forma.strip().capitalize()
+    forma_czysta = dane.forma.strip()
 
 
     tytul = (dane.tytul or "") or opis_czysty[:20]
