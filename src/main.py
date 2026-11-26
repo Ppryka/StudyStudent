@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
@@ -17,7 +17,7 @@ PLIK_OGLOSZEN = os.path.join(BASE_DIR, "ogloszenia.json")
 
 
 PROFIL_STUDENTA = {
-    "imie": "Katarzyna N.",
+    "imie": "Marek",
     "uczelnia": "AGH",
     "kierunek": "Informatyka",
     "rok_studiow": 2,
@@ -30,6 +30,7 @@ class Ogloszenie(BaseModel):
     opis: str
     kategoria: str
     tag: str
+    forma: Literal["Stacjonarnie", "Online"] = "Stacjonarnie"
     status: str = "Aktywne"
     data_publikacji: Optional[str] = None
 
@@ -45,6 +46,7 @@ DOMYSLNE_OGLOSZENIA = [
         "opis": "Szukam osoby do wspólnego przerobienia całek przed kolokwium z matematyki.",
         "kategoria": "Nauka",
         "tag": "Matma",
+        "forma": "Stacjonarnie",
         "status": "Aktywne",
         "data_publikacji": dzis(),
     },
@@ -54,6 +56,7 @@ DOMYSLNE_OGLOSZENIA = [
         "opis": "Pomogę w zrozumieniu wskaźników i programowania obiektowego w C++.",
         "kategoria": "Nauka",
         "tag": "Programowanie",
+        "forma": "Online",
         "status": "Aktywne",
         "data_publikacji": dzis(),
     },
@@ -63,6 +66,7 @@ DOMYSLNE_OGLOSZENIA = [
         "opis": "Szukam ekipy na wspólne wyjście na piwo dziś wieczorem.",
         "kategoria": "Wspolne wyjscie",
         "tag": "Impreza",
+        "forma": "Stacjonarnie",
         "status": "Aktywne",
         "data_publikacji": dzis(),
     },
@@ -72,6 +76,7 @@ DOMYSLNE_OGLOSZENIA = [
         "opis": "Jutro organizuję rajd rowerowy, zapraszam wszystkich chętnych na zbiórkę.",
         "kategoria": "Wspolne wyjscie",
         "tag": "Sport",
+        "forma": "Stacjonarnie",
         "status": "Aktywne",
         "data_publikacji": dzis(),
     },
@@ -81,8 +86,9 @@ DOMYSLNE_OGLOSZENIA = [
         "opis": "Potrzebuję pomocy z zadaniami z mechaniki klasycznej na zaliczenie z fizyki.",
         "kategoria": "Nauka",
         "tag": "Fizyka",
+        "forma": "Online",
         "status": "Aktywne",
-        "data_publikacji": dzis(35), 
+        "data_publikacji": dzis(35),
     },
 ]
 
@@ -118,11 +124,9 @@ def strona_glowna():
     return wyslij_strone()
 
 
-
 @app.get("/admin", include_in_schema=False)
 def strona_admina():
     return wyslij_strone()
-
 
 
 @app.get("/api/ogloszenia")
@@ -155,6 +159,7 @@ def pobierz_ogloszenia(
 
 # Dodawanie nowego ogłoszenia
 @app.post("/api/ogloszenia", status_code=201)
+
 def dodaj_ogloszenie(dane: Ogloszenie):
 
     if not PROFIL_STUDENTA["uzupelniony"]:
@@ -162,7 +167,6 @@ def dodaj_ogloszenie(dane: Ogloszenie):
             status_code=403,
             detail="Profil jest wymagany. Uzupełnij profil przed dodaniem ogłoszenia.",
         )
-
 
     opis_czysty = dane.opis.strip()
     if len(opis_czysty) < 20:
@@ -176,6 +180,8 @@ def dodaj_ogloszenie(dane: Ogloszenie):
             detail="Opis problemu może mieć maksymalnie 1000 znaków.",
         )
 
+    forma_czysta = dane.forma.strip().capitalize()
+
 
     tytul = (dane.tytul or "") or opis_czysty[:20]
 
@@ -187,6 +193,7 @@ def dodaj_ogloszenie(dane: Ogloszenie):
         "opis": opis_czysty,
         "kategoria": dane.kategoria,
         "tag": dane.tag,
+        "forma": forma_czysta,
         "status": "Aktywne",
         "data_publikacji": dane.data_publikacji or dzis(),
     }
@@ -195,7 +202,6 @@ def dodaj_ogloszenie(dane: Ogloszenie):
     zapisz_ogloszenia(OGLOSZENIA)
 
     return nowe
-
 
 
 @app.delete("/api/ogloszenia/{ogloszenie_id}")
