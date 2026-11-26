@@ -2,6 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>StudyStudent - Tablica Ogłoszeń</title>
     <style>
         * {
@@ -15,13 +16,13 @@
             padding: 0;
         }
 
-    
         .top-bar {
-            background-color: #111111;
+            background-color: #2c4a7c;
             color: #ffffff;
             padding: 12px 40px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
@@ -33,7 +34,6 @@
             user-select: none;
         }
 
-    
         .logo-badge {
             background: linear-gradient(135deg, #007bff, #00d2ff);
             width: 46px;
@@ -57,16 +57,39 @@
                 color: #00d2ff;
             }
 
-        /* 
-           TREŚĆ GŁÓWNA STRONY
-         */
         .container {
             max-width: 800px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        .filtr-box {
+        .naglowek-tablicy {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+            .naglowek-tablicy h1 {
+                margin: 0;
+            }
+
+        #btn-dodaj {
+            background: #f5a041;
+            color: #1a1a2e;
+            font-weight: bold;
+            padding: 10px 18px;
+            margin: 0;
+        }
+
+            #btn-dodaj:hover {
+                background: #e08f30;
+            }
+
+        .filtr-box,
+        .formularz-box {
             background: white;
             padding: 15px;
             border-radius: 8px;
@@ -86,7 +109,7 @@
             }
 
         button {
-            background: #007bff;
+            background: #2c4a7c;
             color: white;
             border: none;
             padding: 6px 12px;
@@ -97,8 +120,39 @@
         }
 
             button:hover {
-                background: #0056b3;
+                background: #1f3860;
             }
+
+            button:focus-visible,
+            input:focus-visible,
+            select:focus-visible,
+            textarea:focus-visible {
+                outline: 2px solid #00d2ff;
+                outline-offset: 2px;
+            }
+
+            button.aktywny {
+                background: #f5a041;
+                color: #1a1a2e;
+            }
+
+                button.aktywny:hover {
+                    background: #e08f30;
+                }
+
+            button:disabled {
+                background: #9aa9c4;
+                cursor: not-allowed;
+            }
+
+            button.drugorzedny {
+                background: #e4e6eb;
+                color: #222;
+            }
+
+                button.drugorzedny:hover {
+                    background: #d3d6dc;
+                }
 
         .ogloszenie {
             background: white;
@@ -106,6 +160,28 @@
             margin-bottom: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+            .ogloszenie h3 {
+                margin: 0 0 6px 0;
+            }
+
+        button.usun {
+            background: #fdecea;
+            color: #9b1c1c;
+            float: right;
+            margin: 0;
+        }
+
+            button.usun:hover {
+                background: #f5c2c0;
+            }
+
+        .opis {
+            margin: 8px 0 10px 0;
+            line-height: 1.5;
+            color: #222;
+            white-space: pre-wrap;
         }
 
         .kategoria {
@@ -123,16 +199,93 @@
             display: inline-block;
         }
 
+        .data {
+            color: #777;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+
         .info-tagi {
             color: #777;
             font-style: italic;
             font-size: 14px;
         }
+
+        /* Formularz dodawania */
+        .formularz-box {
+            display: none;
+        }
+
+            .formularz-box.otwarty {
+                display: block;
+            }
+
+            .formularz-box h2 {
+                margin: 0 0 14px 0;
+                font-size: 20px;
+            }
+
+        .pole {
+            margin-bottom: 14px;
+        }
+
+            .pole label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
+
+            .pole input,
+            .pole select,
+            .pole textarea {
+                width: 100%;
+                padding: 8px 10px;
+                border: 1px solid #c9ccd3;
+                border-radius: 4px;
+                font-family: inherit;
+                font-size: 15px;
+            }
+
+            .pole textarea {
+                min-height: 110px;
+                resize: vertical;
+            }
+
+        .podpowiedz {
+            font-size: 13px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+            .podpowiedz.blad {
+                color: #c0392b;
+            }
+
+        .komunikat {
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            display: none;
+        }
+
+            .komunikat.blad {
+                display: block;
+                background: #fdecea;
+                color: #9b1c1c;
+                border: 1px solid #f5c2c0;
+            }
+
+            .komunikat.ok {
+                display: block;
+                background: #e8f6ec;
+                color: #1e6b34;
+                border: 1px solid #b9e2c4;
+            }
     </style>
 </head>
 <body>
 
- 
     <div class="top-bar">
         <div class="logo-section" onclick="window.location.reload()">
             <div class="logo-badge">🦉</div>
@@ -140,9 +293,43 @@
         </div>
     </div>
 
- 
     <div class="container">
-        <h1 style="margin-top: 0; margin-bottom: 20px;">Tablica Ogłoszeń</h1>
+        <div class="naglowek-tablicy">
+            <h1>Tablica Ogłoszeń</h1>
+            <button id="btn-dodaj" onclick="przelaczFormularz()">Dodaj ogłoszenie</button>
+        </div>
+
+        <!-- Formularz dodawania ogłoszenia -->
+        <div class="formularz-box" id="formularz">
+            <h2>Nowe ogłoszenie</h2>
+
+            <div id="komunikat" class="komunikat" role="alert"></div>
+
+            <div class="pole">
+                <label for="pole-tytul">Tytuł (opcjonalnie)</label>
+                <input type="text" id="pole-tytul" maxlength="100">
+                <div class="podpowiedz">Jeśli go pominiesz, tytułem będzie początek opisu.</div>
+            </div>
+
+            <div class="pole">
+                <label for="pole-opis">Opis problemu</label>
+                <textarea id="pole-opis" maxlength="1000" oninput="aktualizujLicznik()"></textarea>
+                <div class="podpowiedz" id="licznik">0 / 1000 znaków (minimum 20)</div>
+            </div>
+
+            <div class="pole">
+                <label for="pole-kategoria">Kategoria</label>
+                <select id="pole-kategoria" onchange="wypelnijTagiFormularza()"></select>
+            </div>
+
+            <div class="pole">
+                <label for="pole-tag">Tag</label>
+                <select id="pole-tag"></select>
+            </div>
+
+            <button id="btn-opublikuj" onclick="dodajOgloszenie()">Opublikuj ogłoszenie</button>
+            <button class="drugorzedny" onclick="przelaczFormularz()">Anuluj</button>
+        </div>
 
         <div class="filtr-box">
             <div class="sekcja-filtrow">
@@ -170,8 +357,23 @@
             'Wspolne wyjscie': ['Impreza', 'Sport'],
         };
 
+        // Tryb administratora: włącza się, gdy adres strony kończy się na /admin
+        const CZY_ADMIN = window.location.pathname.replace(/\/+$/, '') === '/admin';
+
+        const MIN_OPIS = 20;
+        const MAX_OPIS = 1000;
+
         let wybranaKategoria = "";
         let wybranyTag = "";
+
+        // Zamienia tekst na bezpieczny dla HTML (ochrona przed wstrzyknięciem kodu)
+        function esc(tekst) {
+            const d = document.createElement('div');
+            d.textContent = tekst == null ? "" : String(tekst);
+            return d.innerHTML;
+        }
+
+        /* ---------- Filtrowanie ---------- */
 
         function wybierzKategorie(kat) {
             wybranaKategoria = kat;
@@ -182,6 +384,7 @@
 
         function wybierzTag(tg) {
             wybranyTag = tg;
+            generujPrzyciskiTagow();
             pobierzOgloszenia();
         }
 
@@ -198,12 +401,14 @@
 
             const btnWszystkie = document.createElement('button');
             btnWszystkie.innerText = "Wszystkie tagi";
+            if (!wybranyTag) btnWszystkie.className = 'aktywny';
             btnWszystkie.onclick = () => wybierzTag("");
             kontener.appendChild(btnWszystkie);
 
             dostepneTagi.forEach(tg => {
                 const btn = document.createElement('button');
                 btn.innerText = tg;
+                if (tg === wybranyTag) btn.className = 'aktywny';
                 btn.onclick = () => wybierzTag(tg);
                 kontener.appendChild(btn);
             });
@@ -220,12 +425,20 @@
                 url += '?' + params.toString();
             }
 
-            const odpowiedz = await fetch(url);
-            const dane = await odpowiedz.json();
+            const tablica = document.getElementById('tablica');
+
+            let dane;
+            try {
+                const odpowiedz = await fetch(url);
+                if (!odpowiedz.ok) throw new Error();
+                dane = await odpowiedz.json();
+            } catch (e) {
+                tablica.innerHTML = "<p><em>Nie udało się pobrać ogłoszeń. Sprawdź, czy serwer działa, i odśwież stronę.</em></p>";
+                return;
+            }
 
             document.getElementById('status-filtrow').innerText = `Aktywne filtry — Kategoria: ${wybranaKategoria || 'Wszystkie'}, Tag: ${wybranyTag || 'Wszystkie'}`;
 
-            const tablica = document.getElementById('tablica');
             tablica.innerHTML = "";
 
             if (dane.length === 0) {
@@ -237,14 +450,140 @@
                 const element = document.createElement('div');
                 element.className = 'ogloszenie';
                 element.innerHTML = `
-                        <h3>${ogloszenie.tytul}</h3>
-                        <p class="kategoria">Kategoria: <strong>${ogloszenie.kategoria}</strong></p>
-                        <span class="tag">#${ogloszenie.tag}</span>
+                        ${CZY_ADMIN ? `<button class="usun" onclick="usunOgloszenie(${Number(ogloszenie.id)})">Usuń</button>` : ''}
+                        <h3>${esc(ogloszenie.tytul)}</h3>
+                        <p class="opis">${esc(ogloszenie.opis)}</p>
+                        <p class="kategoria">Kategoria: <strong>${esc(ogloszenie.kategoria)}</strong></p>
+                        <span class="tag">#${esc(ogloszenie.tag)}</span>
+                        <span class="data">Dodano: ${esc(ogloszenie.data_publikacji)}</span>
                     `;
                 tablica.appendChild(element);
             });
         }
 
+        async function usunOgloszenie(id) {
+            if (!confirm("Na pewno usunąć to ogłoszenie? Tej operacji nie można cofnąć.")) return;
+
+            try {
+                const odpowiedz = await fetch('/api/ogloszenia/' + id, { method: 'DELETE' });
+                if (!odpowiedz.ok) {
+                    let dane = null;
+                    try { dane = await odpowiedz.json(); } catch (e) { }
+                    alert((dane && typeof dane.detail === 'string') ? dane.detail : "Nie udało się usunąć ogłoszenia.");
+                }
+            } catch (e) {
+                alert("Brak połączenia z serwerem. Spróbuj ponownie.");
+                return;
+            }
+
+            await pobierzOgloszenia();
+        }
+
+        /* ---------- Formularz dodawania ---------- */
+
+        function przelaczFormularz() {
+            const formularz = document.getElementById('formularz');
+            const otwarty = formularz.classList.toggle('otwarty');
+            document.getElementById('btn-dodaj').style.display = otwarty ? 'none' : '';
+            if (otwarty) {
+                pokazKomunikat('', '');
+                document.getElementById('pole-opis').focus();
+            }
+        }
+
+        function wypelnijKategorieFormularza() {
+            const sel = document.getElementById('pole-kategoria');
+            sel.innerHTML = "";
+            Object.keys(tagiDlaKategorii).forEach(kat => {
+                const opt = document.createElement('option');
+                opt.value = kat;
+                opt.textContent = kat;
+                sel.appendChild(opt);
+            });
+            wypelnijTagiFormularza();
+        }
+
+        function wypelnijTagiFormularza() {
+            const kat = document.getElementById('pole-kategoria').value;
+            const selTag = document.getElementById('pole-tag');
+            selTag.innerHTML = "";
+            (tagiDlaKategorii[kat] || []).forEach(tg => {
+                const opt = document.createElement('option');
+                opt.value = tg;
+                opt.textContent = tg;
+                selTag.appendChild(opt);
+            });
+        }
+
+        function aktualizujLicznik() {
+            const dlugosc = document.getElementById('pole-opis').value.trim().length;
+            const licznik = document.getElementById('licznik');
+            licznik.textContent = `${dlugosc} / ${MAX_OPIS} znaków (minimum ${MIN_OPIS})`;
+            licznik.className = 'podpowiedz' + (dlugosc > 0 && dlugosc < MIN_OPIS ? ' blad' : '');
+        }
+
+        function pokazKomunikat(typ, tekst) {
+            const k = document.getElementById('komunikat');
+            k.className = 'komunikat' + (typ ? ' ' + typ : '');
+            k.textContent = tekst;
+        }
+
+        // Zamienia odpowiedź błędu z serwera na czytelny tekst
+        function tekstBledu(dane) {
+            if (!dane || !dane.detail) return "Nie udało się dodać ogłoszenia.";
+            if (typeof dane.detail === 'string') return dane.detail;
+            // Błąd walidacji (422) - lista problemów
+            return "Sprawdź wypełnione pola formularza.";
+        }
+
+        async function dodajOgloszenie() {
+            const opis = document.getElementById('pole-opis').value.trim();
+            const tytul = document.getElementById('pole-tytul').value.trim();
+            const kategoria = document.getElementById('pole-kategoria').value;
+            const tag = document.getElementById('pole-tag').value;
+
+            if (opis.length < MIN_OPIS) {
+                pokazKomunikat('blad', `Opis musi mieć co najmniej ${MIN_OPIS} znaków. Teraz ma ${opis.length}.`);
+                return;
+            }
+
+            const przycisk = document.getElementById('btn-opublikuj');
+            przycisk.disabled = true;
+            pokazKomunikat('', '');
+
+            try {
+                const odpowiedz = await fetch('/api/ogloszenia', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tytul: tytul || null,
+                        opis: opis,
+                        kategoria: kategoria,
+                        tag: tag
+                    })
+                });
+
+                if (!odpowiedz.ok) {
+                    let dane = null;
+                    try { dane = await odpowiedz.json(); } catch (e) { }
+                    pokazKomunikat('blad', tekstBledu(dane));
+                    return;
+                }
+
+                // Sukces: czyścimy formularz, zamykamy go i odświeżamy tablicę
+                document.getElementById('pole-tytul').value = "";
+                document.getElementById('pole-opis').value = "";
+                aktualizujLicznik();
+                przelaczFormularz();
+                await pobierzOgloszenia();
+            } catch (e) {
+                pokazKomunikat('blad', "Brak połączenia z serwerem. Spróbuj ponownie.");
+            } finally {
+                przycisk.disabled = false;
+            }
+        }
+
+        wypelnijKategorieFormularza();
         pobierzOgloszenia();
     </script>
 
