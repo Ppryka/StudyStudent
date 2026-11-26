@@ -5,8 +5,9 @@
     "opis": "Szukam osoby do wspólnego przerobienia całek przed kolokwium z matematyki.",
     "kategoria": "Nauka",
     "tag": "Matma",
+    "forma": "Stacjonarnie",
     "status": "Aktywne",
-    "data_publikacji": "2026-11-25"
+    "data_publikacji": "2026-11-26"
   },
   {
     "id": 2,
@@ -14,8 +15,9 @@
     "opis": "Pomogę w zrozumieniu wskaźników i programowania obiektowego w C++.",
     "kategoria": "Nauka",
     "tag": "Programowanie",
+    "forma": "Online",
     "status": "Aktywne",
-    "data_publikacji": "2026-11-25"
+    "data_publikacji": "2026-11-26"
   },
   {
     "id": 3,
@@ -23,8 +25,9 @@
     "opis": "Szukam ekipy na wspólne wyjście na piwo dziś wieczorem.",
     "kategoria": "Wspolne wyjscie",
     "tag": "Impreza",
+    "forma": "Stacjonarnie",
     "status": "Aktywne",
-    "data_publikacji": "2026-11-25"
+    "data_publikacji": "2026-11-26"
   },
   {
     "id": 4,
@@ -32,8 +35,9 @@
     "opis": "Jutro organizuję rajd rowerowy, zapraszam wszystkich chętnych na zbiórkę.",
     "kategoria": "Wspolne wyjscie",
     "tag": "Sport",
+    "forma": "Stacjonarnie",
     "status": "Aktywne",
-    "data_publikacji": "2026-11-25"
+    "data_publikacji": "2026-11-26"
   },
   {
     "id": 5,
@@ -41,7 +45,8 @@
     "opis": "Potrzebuję pomocy z zadaniami z mechaniki klasycznej na zaliczenie z fizyki.",
     "kategoria": "Nauka",
     "tag": "Fizyka",
+    "forma": "Online",
     "status": "Wygasłe",
-    "data_publikacji": "2026-10-21"
+    "data_publikacji": "2026-10-22"
   }
 ]
